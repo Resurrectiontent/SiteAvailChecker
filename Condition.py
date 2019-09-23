@@ -19,3 +19,6 @@ class Condition:
         if not self._condition:
             self._condition = True
             self._bot.send_message('Сервер заработал!')
+
+    def interrupt(self):
+        self._bot.disconnect_db()

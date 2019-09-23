@@ -35,3 +35,7 @@ class SiteChecker:
             return True
         except:
             return False
+
+    def immediate_break(self):
+        self._browser.close()
+        self._browser.quit()

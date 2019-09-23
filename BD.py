@@ -55,3 +55,7 @@ class DB:
         self.cursor.execute(query)
         result_table = self.cursor.fetchall()
         return [row['id'] for row in result_table]
+
+    def disconnect(self):
+        self.connection.commit()
+        self.connection.close()

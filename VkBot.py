@@ -11,7 +11,7 @@ class VkBot(Thread):
     _VK_BOT_TOKEN = '66672c7ca1271149c73e7cd779a5068485829383e34b4e09dd166560e9a5c10103625b0eae8e8a8049a02'
 
     def __init__(self):
-        Thread.__init__(self)
+        Thread.__init__(self, daemon=True)
 
         self.bd = DB()
         self.vk_session = vk_api.VkApi(token=self._VK_BOT_TOKEN)
@@ -24,6 +24,9 @@ class VkBot(Thread):
             self.vk.messages.send(user_id=user,
                                   random_id=get_random_id(),
                                   message=message)
+
+    def disconnect_db(self):
+        self.bd.disconnect()
 
     def run(self):
         for event in self._longpoll.listen():
