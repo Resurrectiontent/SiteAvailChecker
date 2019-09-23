@@ -13,6 +13,7 @@ def initialize(url):
     browser.get(url)
     return browser
 
+
 def login(browser, login, password):
     un = browser.find_element_by_xpath('//input[@id="username"]')
     pw = browser.find_element_by_xpath('//input[@id="password"]')
