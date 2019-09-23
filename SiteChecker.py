@@ -31,6 +31,7 @@ class SiteChecker:
             WebDriverWait(self._browser, 10).until(
                 EC.presence_of_element_located((By.XPATH, '//input[@value="Искать"]'))
             )
+            self._browser.close()
             return True
         except:
             return False

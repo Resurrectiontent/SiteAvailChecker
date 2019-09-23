@@ -11,7 +11,7 @@ class VkBot(Thread):
     _VK_BOT_TOKEN = '66672c7ca1271149c73e7cd779a5068485829383e34b4e09dd166560e9a5c10103625b0eae8e8a8049a02'
 
     def __init__(self):
-        super().__init__(self, name='poller')
+        Thread.__init__(self)
 
         self.bd = DB()
         self.vk_session = vk_api.VkApi(token=self._VK_BOT_TOKEN)
@@ -20,8 +20,8 @@ class VkBot(Thread):
 
     def send_message(self, message: str):
         users = self.bd.get_user_ids()
-        if users:
-            self.vk.messages.send(user_id=', '.join(users),
+        for user in users:
+            self.vk.messages.send(user_id=user,
                                   random_id=get_random_id(),
                                   message=message)
 
@@ -41,7 +41,7 @@ class VkBot(Thread):
                                                   random_id=get_random_id(),
                                                   message=answer['value'])
 
-                elif event.obj.text != '/stop':
+                elif event.obj.text.lower() == '/stop':
                     if event.from_user:
                         answer = self.bd.remove_user(event.obj.from_id)
 

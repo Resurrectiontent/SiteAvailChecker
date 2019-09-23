@@ -10,12 +10,12 @@ class Condition:
 
     def crashed(self):
         # if condition was True
-        if True:#self._condition:
+        if self._condition:
             self._condition = False
             self._bot.send_message('Сервер упал!')
 
     def risen(self):
         # if condition was False
-        if True:#not self._condition:
+        if not self._condition:
             self._condition = True
             self._bot.send_message('Сервер заработал!')

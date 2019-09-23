@@ -15,7 +15,6 @@ class DB:
                                           user=self._USERNAME,
                                           password=self._PASSWORD,
                                           db=self._DB_NAME,
-                                          carset='utfmb4',
                                           cursorclass=DictCursor)
 
         self.cursor = self.connection.cursor()
