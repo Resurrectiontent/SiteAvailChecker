@@ -4,8 +4,8 @@ from VkBot import VkBot
 class Condition:
 
     def __init__(self):
-        self._condition = False
-        self._bot = VkBot('Сейчас сервер лежит.')
+        self._condition = True
+        self._bot = VkBot('Сейчас сервер работает.')
         self._bot.start()
 
     def crashed(self):

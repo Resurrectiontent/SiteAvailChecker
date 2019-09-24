@@ -48,7 +48,7 @@ class DB:
                    FROM {0}'''.format(self._TABLE_NAME)
         self.cursor.execute(query)
         result_table = self.cursor.fetchall()
-        return [row['id'] for row in result_table]
+        return [row[1] for row in result_table]
 
     def disconnect(self):
         self.connection.commit()

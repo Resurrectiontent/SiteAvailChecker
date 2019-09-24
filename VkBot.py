@@ -10,7 +10,7 @@ class VkBot(Thread):
     _GROUP_ID = '185661251'
     _VK_BOT_TOKEN = '66672c7ca1271149c73e7cd779a5068485829383e34b4e09dd166560e9a5c10103625b0eae8e8a8049a02'
 
-    def __init__(self, welcome_msg:str):
+    def __init__(self, welcome_msg: str):
         Thread.__init__(self, daemon=True)
 
         self.bd = DB()
