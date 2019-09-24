@@ -4,7 +4,7 @@ from pymysql.cursors import DictCursor
 
 class DB:
     # credentials
-    _USERNAME, _PASSWORD = 'superman', '$uperPwd'
+    _USERNAME, _PASSWORD = 'supermario', '5aveThePrince$$'
     # name of database
     _DB_NAME = 'users'
     # name of target table

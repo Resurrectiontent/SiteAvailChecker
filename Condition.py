@@ -12,13 +12,15 @@ class Condition:
         # if condition was True
         if self._condition:
             self._condition = False
-            self._bot.send_message('Сервер упал!')
+            self._bot.welcome('Сейчас сервер лежит.')
+            self._bot.send_messages('Сервер упал!')
 
     def risen(self):
         # if condition was False
         if not self._condition:
             self._condition = True
-            self._bot.send_message('Сервер заработал!')
+            self._bot.welcome('Сейчас сервер работает.')
+            self._bot.send_messages('Сервер заработал!')
 
     def interrupt(self):
         self._bot.disconnect_db()
