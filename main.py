@@ -5,7 +5,7 @@ from threading import Thread
 from Condition import Condition
 from SiteChecker import SiteChecker
 
-URL = r'http://v.dltc.spbu.ru:5000'
+URL = r'http://v.dltc.spbu.ru:5010/sign-in'
 PERIOD = 60  # Seconds
 
 cond = Condition()

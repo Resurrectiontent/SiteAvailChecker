@@ -28,7 +28,7 @@ class SiteChecker:
             pw.send_keys(Keys.RETURN)
 
             WebDriverWait(SiteChecker.browser, 10).until(
-                EC.presence_of_element_located((By.XPATH, '//input[@value="Искать"]'))
+                EC.presence_of_element_located((By.XPATH, '//button[text()="Искать"]'))
             )
             SiteChecker.browser.close()
             return True
