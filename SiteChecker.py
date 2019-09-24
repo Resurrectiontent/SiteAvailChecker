@@ -17,11 +17,12 @@ class SiteChecker:
         SiteChecker.browser.get(url)
         try:
             WebDriverWait(SiteChecker.browser, 10).until(
-                EC.presence_of_element_located((By.TAG_NAME, 'div'))
+                EC.presence_of_element_located((By.XPATH, '//input[@id="username"]'))
             )
             un = SiteChecker.browser.find_element_by_xpath('//input[@id="username"]')
             pw = SiteChecker.browser.find_element_by_xpath('//input[@id="password"]')
 
+            un.click()
             un.send_keys(SiteChecker._USERNAME)
             un.send_keys(Keys.TAB)
             pw.send_keys(SiteChecker._PASSWORD)

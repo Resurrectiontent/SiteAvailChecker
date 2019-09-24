@@ -1,21 +1,14 @@
-import pymysql
-from pymysql.cursors import DictCursor
+import sqlite3
 
 
 class DB:
-    # credentials
-    _USERNAME, _PASSWORD = 'supermario', '5aveThePrince$$'
     # name of database
-    _DB_NAME = 'users'
+    _DB_NAME = 'users.db'
     # name of target table
     _TABLE_NAME = 'ids'
 
     def __init__(self):
-        self.connection = pymysql.connect(host='localhost',
-                                          user=self._USERNAME,
-                                          password=self._PASSWORD,
-                                          db=self._DB_NAME,
-                                          cursorclass=DictCursor)
+        self.connection = sqlite3.connect(self._DB_NAME, check_same_thread=False)
 
         self.cursor = self.connection.cursor()
 
@@ -47,7 +40,8 @@ class DB:
         query = '''SELECT *
                    FROM {0}
                    WHERE id = {1}'''.format(self._TABLE_NAME, user_id)
-        return bool(self.cursor.execute(query))
+        self.cursor.execute(query)
+        return bool(self.cursor.fetchall())
 
     def get_user_ids(self):
         query = '''SELECT *
