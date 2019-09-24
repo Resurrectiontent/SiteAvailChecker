@@ -5,7 +5,7 @@ class Condition:
 
     def __init__(self):
         self._condition = False
-        self._bot = VkBot()
+        self._bot = VkBot('Сейчас сервер лежит.')
         self._bot.start()
 
     def crashed(self):

@@ -9,12 +9,11 @@ URL = r'http://v.dltc.spbu.ru:5000'
 PERIOD = 60  # Seconds
 
 cond = Condition()
-sch = SiteChecker(URL)
 
 
-def init_int_threads(threads: list):
-    alarm_delegates = [sch.immediate_break, cond.interrupt]
-    threads = [Thread(target=x) for x in alarm_delegates]
+def init_int_threads():
+    alarm_delegates = [SiteChecker.onclose, cond.interrupt]
+    return [Thread(target=x) for x in alarm_delegates]
 
 
 def alarm_stop():
@@ -27,9 +26,9 @@ atexit.register(alarm_stop)
 
 
 if __name__ == '__main__':
-    init_int_threads(interrupting_threads)
+    interrupting_threads = init_int_threads()
     while True:
-        if sch.check_site():
+        if SiteChecker.check_site(URL):
             cond.risen()
         else:
             cond.crashed()
