@@ -1,4 +1,7 @@
 import vk_api
+import time
+
+from logging import error
 from BD import DB
 from threading import Thread
 from vk_api.utils import get_random_id
@@ -34,11 +37,18 @@ class VkBot(Thread):
         self.bd.disconnect()
 
     def _send_msg(self, msg: str, usr):
-        self.vk.messages.send(user_id=usr,
-                              random_id=get_random_id(),
-                              message=msg)
+        sent = False
+        while not sent:
+            try:
+                self.vk.messages.send(user_id=usr,
+                                      random_id=get_random_id(),
+                                      message=msg)
+                sent = True
+            except:
+                error('Message sending failed.')
+                time.sleep(30)
 
-    def run(self):
+    def poll(self):
         for event in self._longpoll.listen():
             if event.type == VkBotEventType.MESSAGE_NEW:
                 if event.obj.text.lower() == '/start':
@@ -69,3 +79,11 @@ class VkBot(Thread):
                     if event.from_user:
                         self._send_msg(self._welcome_msg,
                                        event.obj.from_id)
+
+    def run(self):
+        while True:
+            try:
+                self.poll()
+            except:
+                error('Polling failed.')
+                time.sleep(30)

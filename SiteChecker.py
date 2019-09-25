@@ -1,3 +1,5 @@
+import time
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -13,14 +15,19 @@ class SiteChecker:
 
     @staticmethod
     def check_site(url):
+        timer = time.time()
         while True:
             try:
                 SiteChecker.browser = webdriver.Firefox()
+                SiteChecker.browser.get(url)
                 break
             except:
-                pass
+                SiteChecker.browser.close()
+                if time.time() - timer >= 30:
+                    return {'value': False, 'cause': 'Internet connection timeout.'}
+                else:
+                    pass
         try:
-            SiteChecker.browser.get(url)
             WebDriverWait(SiteChecker.browser, 10).until(
                 EC.presence_of_element_located((By.XPATH, '//input[@id="username"]'))
             )
@@ -34,12 +41,13 @@ class SiteChecker:
             pw.send_keys(Keys.RETURN)
 
             WebDriverWait(SiteChecker.browser, 10).until(
-                EC.presence_of_element_located((By.XPATH, '//button[text()="Искать"]'))
+                EC.presence_of_element_located((By.XPATH, '//*[text()="Оценка"]'))
             )
             SiteChecker.browser.close()
-            return True
+            return {'value': True, 'cause': ''}
         except:
-            return False
+            SiteChecker.browser.close()
+            return {'value': False, 'cause': 'Server answer failure.'}
 
     @staticmethod
     def onclose():
