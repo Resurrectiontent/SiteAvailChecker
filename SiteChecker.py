@@ -13,9 +13,14 @@ class SiteChecker:
 
     @staticmethod
     def check_site(url):
-        SiteChecker.browser = webdriver.Firefox()
-        SiteChecker.browser.get(url)
+        while True:
+            try:
+                SiteChecker.browser = webdriver.Firefox()
+                break
+            except:
+                pass
         try:
+            SiteChecker.browser.get(url)
             WebDriverWait(SiteChecker.browser, 10).until(
                 EC.presence_of_element_located((By.XPATH, '//input[@id="username"]'))
             )
