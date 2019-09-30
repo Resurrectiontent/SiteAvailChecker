@@ -25,18 +25,22 @@ class VkBot(Thread):
         self._longpoll = VkBotLongPoll(self.vk_session, self._GROUP_ID)
 
     def welcome(self, text: str):
+        """Changes welcoming message"""
         self._welcome_msg = text
 
     def send_messages(self, message: str):
+        """Sends messages for all users"""
         users = self.bd.get_user_ids()
         for user in users:
             self._send_msg(message,
                            user)
 
     def disconnect_db(self):
+        """Safely closes db connection"""
         self.bd.disconnect()
 
     def _send_msg(self, msg: str, usr):
+        """Sends message to the user"""
         sent = False
         while not sent:
             try:
@@ -49,6 +53,7 @@ class VkBot(Thread):
                 time.sleep(30)
 
     def poll(self):
+        """Bot polling using longpoll api"""
         for event in self._longpoll.listen():
             if event.type == VkBotEventType.MESSAGE_NEW:
                 if event.obj.text.lower() == '/start':
@@ -81,6 +86,7 @@ class VkBot(Thread):
                                        event.obj.from_id)
 
     def run(self):
+        """Starts safe polling"""
         while True:
             try:
                 self.poll()

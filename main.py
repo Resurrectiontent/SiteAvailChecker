@@ -1,6 +1,6 @@
 import time
 import atexit
-from logging import warn, error
+from logging import warning, error
 
 from threading import Thread
 from Condition import Condition
@@ -9,32 +9,32 @@ from SiteChecker import SiteChecker
 URL = r'http://v.dltc.spbu.ru:5000/user/sign-in'
 PERIOD = 300  # Seconds
 
-cond = Condition()
-
 
 def init_int_threads():
+    """Initializes threads which safely interrupt work of application"""
     alarm_delegates = [SiteChecker.onclose, cond.interrupt]
     return [Thread(target=x) for x in alarm_delegates]
 
 
 def alarm_stop():
+    """Safely stops application"""
     for breaker in interrupting_threads:
         breaker.start()
 
 
-interrupting_threads = []
-atexit.register(alarm_stop)
-
-
 if __name__ == '__main__':
+    cond = Condition()
+    atexit.register(alarm_stop)
     interrupting_threads = init_int_threads()
+
+    # Infinite site checking
     while True:
         response = SiteChecker.check_site(URL)
         if response['value']:
             cond.risen()
 
         elif response['cause'].lower().startswith('server'):
-            warn(response['cause'])
+            warning(response['cause'])
             cond.crashed()
 
         elif response['cause'].lower().startswith('internet'):

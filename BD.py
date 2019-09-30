@@ -13,6 +13,7 @@ class DB:
         self.cursor = self.connection.cursor()
 
     def add_user(self, user_id):
+        """Adds new user if not exists"""
         if not self._user_exists(user_id):
             query = '''INSERT INTO {0}(id) 
                        VALUES ({1});'''.format(self._TABLE_NAME, user_id)
@@ -25,6 +26,7 @@ class DB:
             return {'type': 'Failure', 'value': 'User already exists.'}
 
     def remove_user(self, user_id):
+        """Removes user if exists"""
         if self._user_exists(user_id):
             query = '''DELETE FROM {0}
                        WHERE id = {1};'''.format(self._TABLE_NAME, user_id)
@@ -37,6 +39,7 @@ class DB:
             return {'type': 'Failure', 'value': "User doesn't exist."}
 
     def _user_exists(self, user_id):
+        """Checks if user exists"""
         query = '''SELECT *
                    FROM {0}
                    WHERE id = {1}'''.format(self._TABLE_NAME, user_id)
@@ -44,6 +47,7 @@ class DB:
         return bool(self.cursor.fetchall())
 
     def get_user_ids(self):
+        """Gets all users from db"""
         query = '''SELECT *
                    FROM {0}'''.format(self._TABLE_NAME)
         self.cursor.execute(query)
@@ -51,5 +55,6 @@ class DB:
         return [row[1] for row in result_table]
 
     def disconnect(self):
+        """Safely disconnects db"""
         self.connection.commit()
         self.connection.close()
